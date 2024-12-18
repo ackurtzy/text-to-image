@@ -1,7 +1,7 @@
 <p align="center">
-    <img src="assets/examples1.png" alt="Image 1" width="300">
-    <img src="assets/diffusion.gif" alt="GIF" width="250">
-    <img src="assets/examples2.png" alt="Image 2" width="300">
+    <img src="assets/examples1.png" alt="Image 1" width="250">
+    <img src="assets/diffusion.gif" alt="GIF" width="210">
+    <img src="assets/examples2.png" alt="Image 2" width="250">
 </p>
 
 
