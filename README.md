@@ -1,37 +1,33 @@
-# Text-to-Image Diffusion Model using Quick, Draw! Dataset 
+# Text-to-Image Diffusion Model using Quick, Draw! Dataset
 
-## Overview 
-This repository implements a **Text-to-Image Diffusion Model**  trained on rasterized versions of the [Google Quick, Draw! Dataset]() . The model uses text embeddings to condition a U-Net architecture, which generates images corresponding to input text prompts.
+## Overview
+
+This repository implements a **Text-to-Image Diffusion Model** trained on rasterized versions of the [Google Quick, Draw! Dataset](https://quickdraw.withgoogle.com/data). The base diffusion model code is from [Hugging Face: The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion). It was modified in this project to work well on the Quick, Draw! dataset and take text embeddings as conditioning.
 The workflow includes:
- 
-1. **Downloading and Processing** : Convert vector sketches in NDJSON format into rasterized images (`.npy` files).
- 
-2. **Training** : A diffusion model conditioned on text embeddings derived from phrases.
- 
-3. **Inference** : Generate rasterized images conditioned on textual prompts.
- 
-4. **Visualization** : Plot and animate the diffusion process.
 
+1. **Downloading and Processing** : Convert vector sketches in NDJSON format into rasterized images (`.npy` files).
+
+2. **Training** : A diffusion model conditioned on text embeddings derived from phrases.
+
+3. **Inference** : Generate rasterized images conditioned on textual prompts.
+
+4. **Visualization** : Plot and animate the diffusion process.
 
 ---
 
-
-## Key Features 
+## Key Features
 
 - Processes Quick, Draw! vector images into 28x28 rasterized images.
- 
+
 - Text conditioning using **BERT embeddings** .
- 
-- Implements a **U-Net-based diffusion model**  for generating images.
+
+- Implements a **U-Net-based diffusion model** for generating images.
 
 - Supports model training, inference, and visualization of generated results.
 
-
 ---
 
-
-## File Structure 
-
+## File Structure
 
 ```graphql
 text-to-image/
@@ -43,15 +39,12 @@ text-to-image/
 ├── plot_data.py              # Visualizes random sketches
 ├── model_text.py             # U-Net architecture with text embeddings
 ├── helpers.py                # Helper functions for sampling, diffusion, etc.
-├── requirements.txt          # Python dependencies
-└── README.md                 # Documentation
+├── README.md                 # Documentation
 ```
-
 
 ---
 
-
-## Dependencies 
+## Dependencies
 
 The project requires the following libraries:
 
@@ -68,28 +61,27 @@ The project requires the following libraries:
 - Matplotlib
 
 - TQDM
- 
+
 - Google Cloud SDK (`gsutil` for data download)
 
 - einops
 
-### Install Dependencies 
+### Install Dependencies
 
 To install all required packages, run:
-
 
 ```bash
 pip install -r requirements.txt
 ```
+
 For `gsutil`, install the [Google Cloud SDK]() .
 
 ---
 
+## Setup and Usage
 
-## Setup and Usage 
 1. **Downloading and Converting Quick, Draw! Data** The script `download_and_convert.py` automates downloading Quick, Draw! NDJSON files and converts them into rasterized images.
-Run:
-
+   Run:
 
 ```bash
 python download_and_convert.py
@@ -98,108 +90,73 @@ python download_and_convert.py
 - Downloads NDJSON files from Google Cloud Storage.
 
 - Converts vector images to rasterized images (28x28).
- 
+
 - Saves them as `.npy` files under `guessed_quickdraw_data`.
 
 > **Note** : Ensure `gsutil` is configured and authenticated.
 
 ---
 
-2. **Training the Diffusion Model** 
-To train the text-to-image model:
-
+2. **Training the Diffusion Model**
+   To train the text-to-image model:
 
 ```bash
 python train_text.py
 ```
-Configuration (inside `train_text.py`): 
+
+Configuration (inside `train_text.py`):
+
 - `data_paths`: Directory containing `.npy` files.
- 
+
 - `alternate_embeddings_path`: JSON file with alternate text phrases.
- 
+
 - Training parameters like `batch_size`, `learning_rate`, `epochs`, and `diffusion_timesteps`.
-The model is saved every 0.5 epochs to the `models/` directory.
+  The model is saved every 0.5 epochs to the `models/` directory.
 
 ---
 
-3. **Inference: Generating Images** Run inference using `inference.py`:
+3. **Inference: Generating Images** To generate images using a pre-trained model (e.g., `final_model.pth`), run:
+
+```bash
+python inference.py --model_path final_model.pth
+```
+
+### Steps:
+
+1. Ensure the pre-trained model file `final_model.pth` is located in the root directory or update the path accordingly.
+
+2. Update the `inference.py` script with the following configurations:
+
+- **`model_path`** : Set it to `final_model.pth` (or its correct path).
+
+```python
+model_path = "final_model.pth"
+```
+
+- **Text Prompts** : Define your phrases under `phrases`:
+
+```python
+phrases = ["submarine", "plane", "car"]
+```
+
+- Set `random_sample = False` to use specific phrases instead of random categories.
+
+- **GIF Path** : Define where the diffusion process GIF will be saved:
+
+```python
+gif_save_path = "results/final_diffusion_process.gif"
+```
+
+3. Run the script:
 
 ```bash
 python inference.py
 ```
-
-#### Configuration: 
- 
-- `model_path`: Path to the trained model.
- 
-- `image_label_paths`: Path to a JSON list of trained categories.
- 
-- `random_sample`: Set to `True` for random categories, or define specific phrases.
- 
-- `gif_save_path`: Path to save an animated GIF of the diffusion process.
-
-The script:
-
-- Plots generated images for 9 prompts.
-
-- Saves a GIF showing the image creation process through diffusion.
-
-
 ---
 
-4. **Visualizing Rasterized Data** To plot samples from a processed `.npy` file:
+## Acknowledgments
 
-```bash
-python plot_data.py
-```
-Update `data_path` in the script to point to the `.npy` file you want to visualize.
-
----
-
-
-## Example Workflow 
- 
-1. Download and preprocess Quick, Draw! data:
-
-
-```bash
-python download_and_convert.py
-```
- 
-2. Train the model:
-
-
-```bash
-python train_text.py
-```
- 
-3. Generate images:
-
-
-```bash
-python inference.py
-```
-
-
----
-
-
-## Results 
-
-- Input: Text prompts like "submarine" or "plane."
-
-- Output: Generated 28x28 grayscale images that match the text prompt.
-
-- Visualization: Plot of generated images and an animated GIF showing the diffusion process.
-
-
----
-
-
-## Acknowledgments 
- 
-- **Google Quick, Draw! Dataset**  for vector sketches.
- 
-- **Diffusion Models**  based on concepts from the paper *"Denoising Diffusion Probabilistic Models"*.
- 
-- **BERT**  embeddings for text conditioning.
+- **Google Quick, Draw! Dataset** for vector sketches.
+- **[Hugging Face: The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion)** base code for regular diffusion model.
+- **Diffusion Models** based on concepts from the paper _"Denoising Diffusion Probabilistic Models"_.
+- **BERT** embeddings for text conditioning.
