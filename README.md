@@ -1,3 +1,10 @@
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+    <img src="assets/examples1.png" alt="Image 1" width="300">
+    <img src="assets/axe_diffusion.gif" alt="Image 2" width="300">
+   <img src="assets/examples2.png" alt="Image 1" width="300">
+</div>
+
+
 # Text-to-Image Diffusion Model using Quick, Draw! Dataset
 
 ## Overview
