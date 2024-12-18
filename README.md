@@ -9,7 +9,7 @@
 
 ## Overview
 
-This repository implements a **Text-to-Image Diffusion Model** trained on rasterized versions of the [Google Quick, Draw! Dataset](https://quickdraw.withgoogle.com/data). The base diffusion model code is from [Hugging Face: The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion). It was modified in this project to work well on the Quick, Draw! dataset and take text embeddings as conditioning.
+This repository implements a **Text-to-Image Diffusion Model** trained on rasterized versions of the [Google Quick, Draw! Dataset](https://quickdraw.withgoogle.com/data). The base diffusion model code is from [Hugging Face: The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion). It was modified in this project to work well on the Quick, Draw! dataset and take text embeddings as conditioning. The text-conditioning works great for exact labels or phrases the model was trained on, but its performance varies for other phrases.
 The workflow includes:
 
 1. **Downloading and Processing** : Convert vector sketches in NDJSON format into rasterized images (`.npy` files).
