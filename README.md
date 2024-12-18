@@ -36,18 +36,17 @@ The workflow includes:
 
 ## File Structure
 
-```graphql
-text-to-image/
-│
-├── download_and_convert.py   # Downloads and converts Quick, Draw! data
-├── vector_to_raster_lib.py   # Converts vector sketches to raster images
-├── train_text.py             # Trains the U-Net diffusion model
-├── inference.py              # Generates images conditioned on text
-├── plot_data.py              # Visualizes random sketches
-├── model_text.py             # U-Net architecture with text embeddings
-├── helpers.py                # Helper functions for sampling, diffusion, etc.
-├── README.md                 # Documentation
-```
+The repository comprises the following key files:
+
+- **`download_and_convert.py`**: Script to download and convert the dataset for training.
+- **`helpers.py`**: Contains utility functions to support various operations.
+- **`inference.py`**: Script to perform inference using the trained model.
+- **`model_text.py`**: Defines the architecture of the text-to-image diffusion model.
+- **`plot_data.py`**: Script to visualize data and results.
+- **`train_text.py`**: Script to train the model on the dataset.
+- **`vector_to_raster_lib.py`**: Library for converting vector images to raster format.
+- **`all_categories.json`**: JSON file listing all categories in the dataset.
+- **`alternate_embeddings.json`**: JSON file containing alternative text phrases for the dataset
 
 ---
 
